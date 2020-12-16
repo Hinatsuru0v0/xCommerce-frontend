@@ -6,7 +6,8 @@ import axios from "axios";
 import "./plugins/element.js";
 
 Vue.config.productionTip = false;
-Vue.prototype.$axios = axios;
+Vue.prototype.$AJAX = axios;
+Vue.prototype.$PUBILC_URL = process.env.BASE_URL;
 
 new Vue({
   router,
