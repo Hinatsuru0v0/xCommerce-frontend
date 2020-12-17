@@ -1,101 +1,91 @@
 <template>
-  <ul class="header-extend-mac">
-    <li>
-      <nav-link
-        product="MacBook Air"
-        to="/"
-        :width="52"
-        img="/static/svg/navbar/mac/macbook_air.svg"
-        status="brandNew"
-      ></nav-link>
-    </li>
-    <li>
-      <nav-link
-        product="MacBook Pro 13 英寸"
-        to="/"
-        :width="54"
-        img="/static/svg/navbar/mac/macbook_pro_13.svg"
-        status="brandNew"
-      ></nav-link>
-    </li>
-    <li>
-      <nav-link
-        product="MacBook Pro 16 英寸"
-        to="/"
-        :width="60"
-        img="/static/svg/navbar/mac/macbook_pro_16.svg"
-      ></nav-link>
-    </li>
-    <li>
-      <nav-link
-        product="iMac"
-        to="/"
-        :width="48"
-        img="/static/svg/navbar/mac/imac.svg"
-      ></nav-link>
-    </li>
-    <li>
-      <nav-link
-        product="iMac Pro"
-        to="/"
-        :width="48"
-        img="/static/svg/navbar/mac/imac_pro.svg"
-      ></nav-link>
-    </li>
-    <li>
-      <nav-link
-        product="Mac Pro"
-        to="/"
-        :width="37"
-        img="/static/svg/navbar/mac/mac_pro.svg"
-      ></nav-link>
-    </li>
-    <li>
-      <nav-link
-        product="Mac Mini"
-        to="/"
-        :width="28"
-        img="/static/svg/navbar/mac/mac_mini.svg"
-        status="brandNew"
-      ></nav-link>
-    </li>
-    <li>
-      <nav-link
-        product="Pro Display XDR"
-        to="/"
-        :width="48"
-        img="/static/svg/navbar/mac/pro_display_xdr.svg"
-      ></nav-link>
-    </li>
-  </ul>
+  <nav-component :goods="macProducts"></nav-component>
 </template>
 
 <script>
-import NavLink from "@/components/commons/tools/NavLink";
+import NavComponent from "@/components/commons/tools/NavComponent";
 
 export default {
   name: "HeaderExtendMac",
   components: {
-    NavLink
+    NavComponent
+  },
+  data() {
+    return {
+      macProducts: [
+        {
+          name: "MacBook Air",
+          link: "/",
+          width: 52,
+          imgUrl: "/static/svg/navbar/mac/macbook_air.svg",
+          status: "brandNew"
+        },
+        {
+          name: "MacBook Pro 13 英寸",
+          link: "/",
+          width: 54,
+          imgUrl: "/static/svg/navbar/mac/macbook_pro_13.svg",
+          status: "brandNew"
+        },
+        {
+          name: "MacBook Pro 16 英寸",
+          link: "/",
+          width: 60,
+          imgUrl: "/static/svg/navbar/mac/macbook_pro_16.svg"
+        },
+        {
+          name: "iMac",
+          link: "/",
+          width: 48,
+          imgUrl: "/static/svg/navbar/mac/imac.svg"
+        },
+        {
+          name: "iMac Pro",
+          link: "/",
+          width: 48,
+          imgUrl: "/static/svg/navbar/mac/imac_pro.svg"
+        },
+        {
+          name: "Mac Pro",
+          link: "/",
+          width: 28,
+          imgUrl: "/static/svg/navbar/mac/mac_pro.svg"
+        },
+        {
+          name: "Mac Mini",
+          link: "/",
+          width: 28,
+          imgUrl: "/static/svg/navbar/mac/mac_mini.svg"
+        },
+        {
+          name: "Pro Display XDR",
+          link: "/",
+          width: 48,
+          imgUrl: "/static/svg/navbar/mac/pro_display_xdr.svg"
+        },
+        {
+          name: "Pro Display XDR",
+          link: "/",
+          width: 48,
+          imgUrl: "/static/svg/navbar/mac/pro_display_xdr.svg"
+        },
+        {
+          name: "配件",
+          link: "/",
+          width: 29,
+          imgUrl: "/static/svg/navbar/mac/mac_acc.svg"
+        },
+        {
+          name: "Big Sur",
+          type: "link",
+          link: "https://www.apple.com.cn/macos/big-sur/",
+          width: 42,
+          imgUrl: "/static/svg/navbar/mac/mac_osx.svg"
+        }
+      ]
+    };
   }
 };
 </script>
 
-<style scoped>
-.header-extend-mac {
-  margin: 0 34px;
-  overflow-x: auto;
-  overflow-y: hidden;
-  white-space: nowrap;
-}
-.header-extend-mac li:first-child {
-  margin-left: 0;
-  padding-left: 4px;
-}
-.header-extend-mac li {
-  display: inline-block;
-  vertical-align: top;
-  margin-left: -0.11765em;
-  padding-left: 20px;
-}
-</style>
+<style scoped></style>
