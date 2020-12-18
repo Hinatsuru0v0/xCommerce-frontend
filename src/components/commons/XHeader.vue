@@ -1,5 +1,5 @@
 <template>
-  <el-header class="header-container">
+  <div class="header-container">
     <el-row class="header-bar">
       <el-col :span="1">
         <router-link class="header-bar-icon apple-logo" to="/"></router-link>
@@ -31,11 +31,11 @@
       </el-col>
       <el-col :span="1" :offset="3">
         <el-popover
-          transition="el-zoom-in-top"
           placement="bottom"
           width="246"
           trigger="click"
           popper-class="header-bar-bag"
+          transition="el-zoom-in-top"
         >
           <p class="header-bar-bag-empty">你的购物袋是空的</p>
           <ul class="header-bar-bag-nav">
@@ -49,7 +49,9 @@
               <router-link class="link account-icon" to="/">账户</router-link>
             </li>
             <li>
-              <router-link class="link sign-in-icon" to="/">登陆</router-link>
+              <router-link class="link sign-in-icon" to="/login"
+                >登陆</router-link
+              >
             </li>
           </ul>
           <el-image
@@ -116,7 +118,7 @@
         </el-card>
       </transition>
     </el-row>
-  </el-header>
+  </div>
 </template>
 
 <script>
@@ -137,8 +139,7 @@ export default {
   },
   data() {
     return {
-      showExtendContent: null,
-      search_content: ""
+      showExtendContent: null
     };
   },
   methods: {
@@ -158,10 +159,10 @@ export default {
   border-radius: 18px;
 }
 .header-nav-search input.el-input__inner {
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 20px;
   height: 36px;
   width: 330px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 20px;
 }
 .header-nav-search i.el-input__icon {
   line-height: 36px;
@@ -174,23 +175,25 @@ ul {
   margin: 0;
   padding: 0;
 }
+.link {
+  text-decoration: none;
+}
 .header-container {
   width: 100%;
-  padding: 0;
 }
-.header-bar {
+.header-container .header-bar {
   background: rgba(0, 0, 0, 0.8);
   height: 44px;
   padding: 0 20px;
 }
-.header-bar-icon {
-  box-sizing: border-box;
+.header-bar .header-bar-icon {
   display: inline-block;
   position: relative;
   height: 44px;
   vertical-align: top;
+  box-sizing: border-box;
 }
-.apple-logo {
+.header-bar .apple-logo {
   background-image: url("/static/svg/header/logo.svg");
   background-size: 16px 44px;
   background-position: center center;
@@ -218,8 +221,8 @@ ul {
   display: inline-flex;
   position: relative;
   float: left;
-  cursor: pointer;
   padding: 0 20px;
+  cursor: pointer;
 }
 .header-bar-content .link {
   color: #f5f5f7;
@@ -243,9 +246,6 @@ ul {
   margin: 0;
   padding: 0;
   border-top: 1px solid #d2d2d7;
-}
-.link {
-  text-decoration: none;
 }
 .header-bar-bag-nav .link {
   color: #06c;
@@ -285,10 +285,10 @@ ul {
   height: 75px;
 }
 .header-nav-content .link {
-  margin-right: 40px;
   font-size: 1em;
-  word-break: keep-all;
   color: rgba(0, 0, 0, 0.7);
+  word-break: keep-all;
+  margin-right: 40px;
   cursor: pointer;
 }
 .header-nav-content .link:hover {
@@ -301,14 +301,14 @@ ul {
 .header-nav-search {
   height: 70px;
 }
-.header-extend {
+.header-container .header-extend {
   height: 100px;
   width: 100%;
   background: #fbfbfb;
   padding: 8px 0;
-  text-align: center;
-  overflow: hidden;
   border: none;
   box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.05);
+  text-align: center;
+  overflow: hidden;
 }
 </style>

@@ -1,6 +1,11 @@
 <template>
   <el-container>
-    <x-header></x-header>
+    <el-header class="no-style" height="119">
+      <x-header></x-header>
+    </el-header>
+    <el-main class="no-style">
+      <router-view></router-view>
+    </el-main>
   </el-container>
 </template>
 
@@ -15,4 +20,9 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.no-style {
+  margin: 0;
+  padding: 0;
+}
+</style>
