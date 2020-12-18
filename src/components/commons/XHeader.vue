@@ -101,6 +101,18 @@
           <header-extend-mac
             v-show="showExtendContent === 'mac'"
           ></header-extend-mac>
+          <header-extend-i-pad
+            v-show="showExtendContent === 'ipad'"
+          ></header-extend-i-pad>
+          <header-extend-i-phone
+            v-show="showExtendContent === 'iphone'"
+          ></header-extend-i-phone>
+          <header-extend-watch
+            v-show="showExtendContent === 'watch'"
+          ></header-extend-watch>
+          <header-extend-music
+            v-show="showExtendContent === 'music'"
+          ></header-extend-music>
         </el-card>
       </transition>
     </el-row>
@@ -109,11 +121,19 @@
 
 <script>
 import HeaderExtendMac from "@/components/commons/extends/HeaderExtendMac";
+import HeaderExtendIPad from "@/components/commons/extends/HeaderExtendIPad";
+import HeaderExtendIPhone from "@/components/commons/extends/HeaderExtendIPhone";
+import HeaderExtendWatch from "@/components/commons/extends/HeaderExtendWatch";
+import HeaderExtendMusic from "@/components/commons/extends/HeaderExtendMusic";
 
 export default {
   name: "XHeader",
   components: {
-    HeaderExtendMac
+    HeaderExtendMac,
+    HeaderExtendIPad,
+    HeaderExtendIPhone,
+    HeaderExtendWatch,
+    HeaderExtendMusic
   },
   data() {
     return {
