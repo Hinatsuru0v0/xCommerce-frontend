@@ -37,10 +37,49 @@
           popper-class="header-bar-bag"
           transition="el-zoom-in-top"
         >
-          <p class="header-bar-bag-empty">你的购物袋是空的</p>
+          <ul
+            v-if="$store.state.isLogin && $store.getters.getShoppingBag.length"
+            class="header-bar-bag-list"
+          >
+            <li
+              class="list-item"
+              :class="{
+                'list-item-first': index === 0,
+                'list-item-last':
+                  index === $store.getters.getShoppingBag.length - 1
+              }"
+              v-for="(item, index) in $store.getters.getShoppingBag"
+              :key="index"
+            >
+              <router-link class="link" :to="item.link">
+                <span class="item-column-1">
+                  <img
+                    class="item-pic"
+                    :src="item['main_pic']"
+                    :alt="item.name"
+                  />
+                </span>
+                <span class="item-column-2">{{ item.name }}</span>
+              </router-link>
+            </li>
+          </ul>
+          <p v-else class="header-bar-bag-empty">你的购物袋是空的</p>
           <ul class="header-bar-bag-nav">
             <li>
-              <router-link class="link bag-icon" to="/">购物袋</router-link>
+              <router-link
+                v-if="!$store.state.isLogin"
+                class="link bag-icon"
+                to="/"
+                >购物袋</router-link
+              >
+              <router-link
+                v-if="$store.state.isLogin"
+                class="link bag-icon"
+                to="/"
+                >购物袋 ({{
+                  $store.getters.getShoppingBag.length
+                }})</router-link
+              >
             </li>
             <li>
               <router-link class="link order-icon" to="/">订单</router-link>
@@ -49,8 +88,18 @@
               <router-link class="link account-icon" to="/">账户</router-link>
             </li>
             <li>
-              <router-link class="link sign-in-icon" to="/login"
+              <router-link
+                v-if="!$store.state.isLogin"
+                class="link sign-in-icon"
+                to="/login"
                 >登陆</router-link
+              >
+              <el-link
+                v-else
+                class="link sign-in-icon"
+                :underline="false"
+                @click="$store.commit('logout')"
+                >注销 {{ $store.state.loginUser.username }}</el-link
               >
             </li>
           </ul>
@@ -167,6 +216,12 @@ export default {
 .header-nav-search i.el-input__icon {
   line-height: 36px;
 }
+.header-bar-bag-list .list-item-first {
+  margin-top: 4px !important;
+}
+.header-bar-bag-list .list-item-last {
+  border-bottom-style: none !important;
+}
 </style>
 
 <style scoped>
@@ -235,6 +290,42 @@ ul {
 .header-bar-content .active {
   opacity: 0.56;
 }
+.header-bar-bag-list {
+  list-style: none;
+  margin-bottom: 8px;
+}
+.header-bar-bag-list .list-item {
+  padding: 16px 0;
+  border-bottom: 1px solid #d2d2d7;
+}
+.header-bar-bag-list .link {
+  margin: 0;
+  padding: 0;
+  display: table;
+  min-height: 60px;
+  width: 100%;
+  color: #1d1d1f;
+  text-decoration: none;
+}
+.header-bar-bag-list .item-column-1,
+.header-bar-bag-list .item-column-2 {
+  display: table-cell;
+  vertical-align: middle;
+}
+.header-bar-bag-list .item-column-1 {
+  padding: 0 12px 0 0;
+  width: 25%;
+}
+.header-bar-bag-list .item-column-2 {
+  margin: 16px 0;
+  width: 75%;
+}
+.item-column-1 .item-pic {
+  max-width: 60px;
+  height: auto;
+  border: 0;
+  vertical-align: middle;
+}
 .header-bar-bag-empty {
   color: #6e6e73;
   margin: 0;
@@ -250,6 +341,7 @@ ul {
 .header-bar-bag-nav .link {
   color: #06c;
   display: block;
+  font-weight: 400;
   line-height: 44px;
   padding: 0 28px;
   white-space: nowrap;

@@ -4,8 +4,25 @@ import Vuex from "vuex";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  state: {},
-  mutations: {},
+  state: {
+    isLogin: false,
+    loginUser: null
+  },
+  getters: {
+    getShoppingBag(state) {
+      return state.loginUser["shopping_bag"];
+    }
+  },
+  mutations: {
+    loginAccount(state, val) {
+      state.isLogin = true;
+      state.loginUser = val;
+    },
+    logout(state) {
+      state.isLogin = false;
+      state.loginUser = null;
+    }
+  },
   actions: {},
   modules: {}
 });

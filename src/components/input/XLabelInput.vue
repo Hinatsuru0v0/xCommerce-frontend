@@ -75,6 +75,7 @@ export default {
   text-align: left;
 }
 .x-label-input .input-label {
+  color: #86868b;
   position: absolute;
   pointer-events: none;
   left: 1rem;
