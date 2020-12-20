@@ -30,143 +30,78 @@
         </ul>
       </el-col>
       <el-col :span="1" :offset="3">
-        <el-popover
-          placement="bottom"
-          width="246"
-          trigger="click"
-          popper-class="header-bar-bag"
-          transition="el-zoom-in-top"
-        >
-          <ul
-            v-if="$store.state.isLogin && $store.getters.getShoppingBag.length"
-            class="header-bar-bag-list"
+        <x-bar-bag :height="44"></x-bar-bag>
+      </el-col>
+    </el-row>
+    <x-affix>
+      <el-row
+        class="header-nav"
+        justify="space-between"
+        align="middle"
+        @mouseleave.native="changeShowExtendContent(null)"
+      >
+        <el-col :span="7" :offset="4">
+          <ul class="header-nav-content">
+            <li>
+              <router-link class="link active" to="/">首页</router-link>
+            </li>
+            <li @mouseenter="changeShowExtendContent('mac')">
+              <router-link class="link" to="/category/mac">Mac</router-link>
+            </li>
+            <li @mouseenter="changeShowExtendContent('ipad')">
+              <router-link class="link" to="/category/ipad">iPad</router-link>
+            </li>
+            <li @mouseenter="changeShowExtendContent('iphone')">
+              <router-link class="link" to="/category/iphone"
+                >iPhone</router-link
+              >
+            </li>
+            <li @mouseenter="changeShowExtendContent('watch')">
+              <router-link class="link" to="/category/watch">Watch</router-link>
+            </li>
+            <li @mouseenter="changeShowExtendContent('music')">
+              <router-link class="link" to="/category/music">Music</router-link>
+            </li>
+          </ul>
+        </el-col>
+        <el-col v-show="!fixStatus" :span="6" :offset="4">
+          <el-autocomplete
+            class="header-nav-search"
+            prefix-icon="el-icon-search"
+            v-model="searchContent"
+            :fetch-suggestions="querySearch"
+            @select="handleSearchResult"
           >
-            <li
-              class="list-item"
-              :class="{
-                'list-item-first': index === 0,
-                'list-item-last':
-                  index === $store.getters.getShoppingBag.length - 1
-              }"
-              v-for="(item, index) in $store.getters.getShoppingBag"
-              :key="index"
-            >
-              <router-link class="link" :to="item.link">
-                <span class="item-column-1">
-                  <img
-                    class="item-pic"
-                    :src="item['main_pic']"
-                    :alt="item.name"
-                  />
-                </span>
-                <span class="item-column-2">{{ item.name }}</span>
-              </router-link>
-            </li>
-          </ul>
-          <p v-else class="header-bar-bag-empty">你的购物袋是空的</p>
-          <ul class="header-bar-bag-nav">
-            <li>
-              <router-link
-                v-if="!$store.state.isLogin"
-                class="link bag-icon"
-                to="/"
-                >购物袋</router-link
-              >
-              <router-link
-                v-if="$store.state.isLogin"
-                class="link bag-icon"
-                to="/"
-                >购物袋 ({{
-                  $store.getters.getShoppingBag.length
-                }})</router-link
-              >
-            </li>
-            <li>
-              <router-link class="link order-icon" to="/">订单</router-link>
-            </li>
-            <li>
-              <router-link class="link account-icon" to="/">账户</router-link>
-            </li>
-            <li>
-              <router-link
-                v-if="!$store.state.isLogin"
-                class="link sign-in-icon"
-                to="/login"
-                >登陆</router-link
-              >
-              <el-link
-                v-else
-                class="link sign-in-icon"
-                :underline="false"
-                @click="$store.commit('logout')"
-                >注销 {{ $store.state.loginUser.username }}</el-link
-              >
-            </li>
-          </ul>
-          <el-image
-            class="header-bar-bag-icon"
-            slot="reference"
-            src="/static/svg/header/bag.svg"
-          ></el-image>
-        </el-popover>
-      </el-col>
-    </el-row>
-    <el-row
-      class="header-nav"
-      justify="space-between"
-      align="middle"
-      @mouseleave.native="changeShowExtendContent(null)"
-    >
-      <el-col :span="6" :offset="5">
-        <ul class="header-nav-content">
-          <li>
-            <router-link class="link active" to="/">首页</router-link>
-          </li>
-          <li @mouseenter="changeShowExtendContent('mac')">
-            <router-link class="link" to="/">Mac</router-link>
-          </li>
-          <li @mouseenter="changeShowExtendContent('ipad')">
-            <router-link class="link" to="/">iPad</router-link>
-          </li>
-          <li @mouseenter="changeShowExtendContent('iphone')">
-            <router-link class="link" to="/">iPhone</router-link>
-          </li>
-          <li @mouseenter="changeShowExtendContent('watch')">
-            <router-link class="link" to="/">Watch</router-link>
-          </li>
-          <li @mouseenter="changeShowExtendContent('music')">
-            <router-link class="link" to="/">Music</router-link>
-          </li>
-        </ul>
-      </el-col>
-      <el-col :span="6" :offset="4">
-        <el-autocomplete class="header-nav-search" prefix-icon="el-icon-search">
-        </el-autocomplete>
-      </el-col>
-      <transition name="el-zoom-in-top">
-        <el-card
-          class="header-extend"
-          :body-style="{ padding: '0' }"
-          v-show="showExtendContent !== null"
-        >
-          <header-extend-mac
-            v-show="showExtendContent === 'mac'"
-          ></header-extend-mac>
-          <header-extend-i-pad
-            v-show="showExtendContent === 'ipad'"
-          ></header-extend-i-pad>
-          <header-extend-i-phone
-            v-show="showExtendContent === 'iphone'"
-          ></header-extend-i-phone>
-          <header-extend-watch
-            v-show="showExtendContent === 'watch'"
-          ></header-extend-watch>
-          <header-extend-music
-            v-show="showExtendContent === 'music'"
-          ></header-extend-music>
-        </el-card>
-      </transition>
-    </el-row>
+          </el-autocomplete>
+        </el-col>
+        <el-col v-show="fixStatus" :span="1" :offset="8">
+          <x-bar-bag :height="75" :is-dark="true"></x-bar-bag>
+        </el-col>
+        <transition name="el-zoom-in-top">
+          <el-card
+            class="header-extend"
+            :body-style="{ padding: '0' }"
+            v-show="showExtendContent !== null"
+          >
+            <header-extend-mac
+              v-show="showExtendContent === 'mac'"
+            ></header-extend-mac>
+            <header-extend-i-pad
+              v-show="showExtendContent === 'ipad'"
+            ></header-extend-i-pad>
+            <header-extend-i-phone
+              v-show="showExtendContent === 'iphone'"
+            ></header-extend-i-phone>
+            <header-extend-watch
+              v-show="showExtendContent === 'watch'"
+            ></header-extend-watch>
+            <header-extend-music
+              v-show="showExtendContent === 'music'"
+            ></header-extend-music>
+          </el-card>
+        </transition>
+      </el-row>
+    </x-affix>
   </div>
 </template>
 
@@ -177,6 +112,9 @@ import HeaderExtendIPhone from "@/components/commons/extends/HeaderExtendIPhone"
 import HeaderExtendWatch from "@/components/commons/extends/HeaderExtendWatch";
 import HeaderExtendMusic from "@/components/commons/extends/HeaderExtendMusic";
 
+import XAffix from "@/components/utils/XAffix";
+import XBarBag from "@/components/commons/tools/XBarBag";
+
 export default {
   name: "XHeader",
   components: {
@@ -184,29 +122,59 @@ export default {
     HeaderExtendIPad,
     HeaderExtendIPhone,
     HeaderExtendWatch,
-    HeaderExtendMusic
+    HeaderExtendMusic,
+    XAffix,
+    XBarBag
   },
   data() {
     return {
+      fixStatus: false,
+      products: [],
+      searchContent: "",
       showExtendContent: null
     };
+  },
+  mounted() {
+    this.getUpdatedProducts();
+    window.addEventListener("scroll", this.navFixed);
+    window.addEventListener("scroll", this.navFixed);
   },
   methods: {
     changeShowExtendContent(val) {
       this.showExtendContent = val;
+    },
+    navFixed() {
+      let fixStatus =
+        document.documentElement.scrollTop || document.body.scrollTop;
+      fixStatus >= 44 ? (this.fixStatus = true) : (this.fixStatus = false);
+    },
+    getUpdatedProducts() {
+      this.$AJAX.get("http://localhost:8099/product").then(res => {
+        this.products = res.data;
+      });
+    },
+    querySearch(queryString, callback) {
+      let products = this.products;
+      let result = queryString
+        ? products.filter(this.createFilter(queryString))
+        : products;
+      callback(result);
+    },
+    createFilter(queryString) {
+      return products => {
+        return (
+          products.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0
+        );
+      };
+    },
+    handleSearchResult(val) {
+      console.log(val);
     }
   }
 };
 </script>
 
 <style>
-.header-bar-bag {
-  margin: 0 auto;
-  padding: 0 20px 10px;
-  min-height: 90px;
-  border: 1px solid #d2d2d7;
-  border-radius: 18px;
-}
 .header-nav-search input.el-input__inner {
   height: 36px;
   width: 330px;
@@ -215,12 +183,6 @@ export default {
 }
 .header-nav-search i.el-input__icon {
   line-height: 36px;
-}
-.header-bar-bag-list .list-item-first {
-  margin-top: 4px !important;
-}
-.header-bar-bag-list .list-item-last {
-  border-bottom-style: none !important;
 }
 </style>
 
@@ -255,13 +217,6 @@ ul {
   background-repeat: no-repeat;
   width: 16px;
 }
-.header-bar-bag-icon {
-  width: 17px;
-  height: 44px;
-  float: right;
-  margin-right: 16px;
-  cursor: pointer;
-}
 .header-bar-content,
 .header-nav-content,
 .header-nav-search {
@@ -290,88 +245,12 @@ ul {
 .header-bar-content .active {
   opacity: 0.56;
 }
-.header-bar-bag-list {
-  list-style: none;
-  margin-bottom: 8px;
-}
-.header-bar-bag-list .list-item {
-  padding: 16px 0;
-  border-bottom: 1px solid #d2d2d7;
-}
-.header-bar-bag-list .link {
-  margin: 0;
-  padding: 0;
-  display: table;
-  min-height: 60px;
-  width: 100%;
-  color: #1d1d1f;
-  text-decoration: none;
-}
-.header-bar-bag-list .item-column-1,
-.header-bar-bag-list .item-column-2 {
-  display: table-cell;
-  vertical-align: middle;
-}
-.header-bar-bag-list .item-column-1 {
-  padding: 0 12px 0 0;
-  width: 25%;
-}
-.header-bar-bag-list .item-column-2 {
-  margin: 16px 0;
-  width: 75%;
-}
-.item-column-1 .item-pic {
-  max-width: 60px;
-  height: auto;
-  border: 0;
-  vertical-align: middle;
-}
-.header-bar-bag-empty {
-  color: #6e6e73;
-  margin: 0;
-  padding: 35px 0 23px;
-  text-align: center;
-  letter-spacing: -0.016em;
-}
-.header-bar-bag-nav li {
-  margin: 0;
-  padding: 0;
-  border-top: 1px solid #d2d2d7;
-}
-.header-bar-bag-nav .link {
-  color: #06c;
-  display: block;
-  font-weight: 400;
-  line-height: 44px;
-  padding: 0 28px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  letter-spacing: -0.016em;
-  background-size: 23px 23px;
-  background-position: -3px 10px;
-  background-repeat: no-repeat;
-}
-.header-bar-bag-nav .link:hover {
-  text-decoration: underline;
-}
-.header-bar-bag-nav .bag-icon {
-  background-image: url("/static/svg/header/bag-box/bag.svg");
-}
-.header-bar-bag-nav .order-icon {
-  background-image: url("/static/svg/header/bag-box/orders.svg");
-}
-.header-bar-bag-nav .account-icon {
-  background-image: url("/static/svg/header/bag-box/account.svg");
-}
-.header-bar-bag-nav .sign-in-icon {
-  background-image: url("/static/svg/header/bag-box/signIn.svg");
-}
 .header-nav {
   height: 75px;
   border-bottom: 1px solid #e1e1e1;
   box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.05);
   box-sizing: border-box;
+  background-color: #fff;
 }
 .header-nav-content {
   height: 75px;
@@ -402,5 +281,6 @@ ul {
   box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.05);
   text-align: center;
   overflow: hidden;
+  z-index: 8888;
 }
 </style>

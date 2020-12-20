@@ -87,6 +87,7 @@ h1 + * {
 .login-container {
   padding-top: 30px;
   padding-bottom: 92px;
+  background-color: #fff;
 }
 .login-container .adaptive {
   width: 980px;
