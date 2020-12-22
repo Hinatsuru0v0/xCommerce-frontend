@@ -1,65 +1,67 @@
 <template>
-  <div class="category-container">
-    <div class="category-container-wrapper">
-      <ul class="category-toolbox">
-        <li>
-          <el-button
-            type="text"
-            class="link"
-            :class="{ active: option === 'comprehensive' }"
-            @click="changeComprehensiveSort"
-            >综合排序</el-button
-          >
-        </li>
-        <li>
-          <el-button
-            type="text"
-            class="link"
-            :class="{ active: option === 'sales' }"
-            @click="changeSalesSort"
-            >销量排序</el-button
-          >
-        </li>
-        <li>
-          <el-button
-            type="text"
-            class="link"
-            :class="{ active: option === 'priceAsc' }"
-            @click="changePriceSortAsc"
-            >价格低到高</el-button
-          >
-        </li>
-        <li>
-          <el-button
-            type="text"
-            class="link"
-            :class="{ active: option === 'priceDesc' }"
-            @click="changePriceSortDesc"
-            >价格高到低</el-button
-          >
-        </li>
-      </ul>
-      <div v-show="products.length === 0" class="category-empty">
-        <img src="/static/images/notice/no-search.png" alt="no search" />
-        <span>抱歉！暂时还没有相关商品</span>
+  <div class="container">
+    <div class="category-container">
+      <div class="category-container-wrapper">
+        <ul class="category-toolbox">
+          <li>
+            <el-button
+              type="text"
+              class="link"
+              :class="{ active: option === 'comprehensive' }"
+              @click="changeComprehensiveSort"
+              >综合排序</el-button
+            >
+          </li>
+          <li>
+            <el-button
+              type="text"
+              class="link"
+              :class="{ active: option === 'sales' }"
+              @click="changeSalesSort"
+              >销量排序</el-button
+            >
+          </li>
+          <li>
+            <el-button
+              type="text"
+              class="link"
+              :class="{ active: option === 'priceAsc' }"
+              @click="changePriceSortAsc"
+              >价格低到高</el-button
+            >
+          </li>
+          <li>
+            <el-button
+              type="text"
+              class="link"
+              :class="{ active: option === 'priceDesc' }"
+              @click="changePriceSortDesc"
+              >价格高到低</el-button
+            >
+          </li>
+        </ul>
+        <div v-show="products.length === 0" class="category-empty">
+          <img src="/static/images/notice/no-search.png" alt="no search" />
+          <span>抱歉！暂时还没有相关商品</span>
+        </div>
+        <div v-show="products.length > 0" class="category-list">
+          <x-product-card
+            v-for="(item, index) in products"
+            :key="index"
+            :product="item"
+          ></x-product-card>
+        </div>
+        <el-pagination
+          :page-size="itemPerPage"
+          :pager-count="7"
+          :current-page="currentPage"
+          :hide-on-single-page="true"
+          layout="total, prev, pager, next"
+          :total="totalProduct"
+          @current-change="handleCurrentChange"
+        >
+        </el-pagination>
       </div>
-      <div v-show="products.length > 0" class="category-list">
-        <x-product-card
-          v-for="(item, index) in products"
-          :key="index"
-          :product="item"
-        ></x-product-card>
-      </div>
-      <el-pagination
-        :page-size="itemPerPage"
-        :pager-count="7"
-        :current-page="currentPage"
-        :hide-on-single-page="true"
-        layout="total, prev, pager, next"
-        :total="totalProduct"
-        @current-change="handleCurrentChange"
-      >
-      </el-pagination>
     </div>
   </div>
 </template>
@@ -159,6 +161,11 @@ export default {
 ul {
   margin: 0;
   padding: 0;
+}
+.container {
+  width: 100%;
+  overflow: hidden;
+  background-color: #ededed;
 }
 .category-container {
   max-width: 1220px;

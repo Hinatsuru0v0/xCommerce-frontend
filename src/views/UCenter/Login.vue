@@ -59,16 +59,15 @@ export default {
               offset: 44
             });
           } else {
-            console.log(res.data[0]);
             this.$store.commit("loginAccount", res.data[0]);
-            setTimeout(() => {
-              this.$router.push({ path: "/" });
-            }, 1000);
             this.$notify.success({
               title: "登陆成功",
               message: "您已登陆成功，继续感受更多美好吧！",
               offset: 44
             });
+            setTimeout(() => {
+              this.$router.push({ path: "/" });
+            }, 1000);
           }
         });
     }

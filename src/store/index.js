@@ -1,6 +1,8 @@
 import Vue from "vue";
 import Vuex from "vuex";
 
+import Cookies from "js-cookie";
+
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -9,18 +11,26 @@ export default new Vuex.Store({
     loginUser: null
   },
   getters: {
-    getShoppingBag(state) {
-      return state.loginUser["shopping_bag"];
+    getCart(state) {
+      return state.loginUser["cart"];
     }
   },
   mutations: {
     loginAccount(state, val) {
       state.isLogin = true;
       state.loginUser = val;
+      Cookies.set("loginState", state.loginUser.id, { expires: 1 });
     },
     logout(state) {
       state.isLogin = false;
       state.loginUser = null;
+      Cookies.remove("loginState");
+    },
+    refreshUser(state, val) {
+      state.loginUser = val;
+    },
+    setCart(state, val) {
+      state.loginUser["cart"] = val;
     }
   },
   actions: {},

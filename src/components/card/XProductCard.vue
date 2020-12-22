@@ -1,5 +1,5 @@
 <template>
-  <router-link class="link list-item" :to="product.link">
+  <router-link class="link list-item" :to="{ name: 'product', params: { id: product.id } }">
     <el-card class="item-card" :body-style="{ padding: '0' }">
       <figure class="item-cover">
         <img :src="product.pic" :alt="product.name" />

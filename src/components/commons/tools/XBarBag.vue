@@ -7,23 +7,26 @@
     transition="el-zoom-in-top"
   >
     <ul
-      v-if="$store.state.isLogin && $store.getters.getShoppingBag.length"
+      v-if="$store.state.isLogin && $store.getters.getCart.length"
       class="header-bar-bag-list"
     >
       <li
         class="list-item"
         :class="{
           'list-item-first': index === 0,
-          'list-item-last': index === $store.getters.getShoppingBag.length - 1
+          'list-item-last': index === $store.getters.getCart.length - 1
         }"
-        v-for="(item, index) in $store.getters.getShoppingBag"
+        v-for="(item, index) in $store.getters.getCart"
         :key="index"
       >
-        <router-link class="link" :to="item.link">
+        <router-link
+          class="link"
+          :to="{ name: 'product', params: { id: item.product.id } }"
+        >
           <span class="item-column-1">
-            <img class="item-pic" :src="item.pic" :alt="item.value" />
+            <img class="item-pic" :src="item.product.pic" :alt="item.product.name" />
           </span>
-          <span class="item-column-2">{{ item.value }}</span>
+          <span class="item-column-2">{{ item.product.name }}</span>
         </router-link>
       </li>
     </ul>
@@ -33,8 +36,11 @@
         <router-link v-if="!$store.state.isLogin" class="link bag-icon" to="/"
           >购物袋</router-link
         >
-        <router-link v-if="$store.state.isLogin" class="link bag-icon" to="/"
-          >购物袋 ({{ $store.getters.getShoppingBag.length }})</router-link
+        <router-link
+          v-if="$store.state.isLogin"
+          class="link bag-icon"
+          to="/cart"
+          >购物袋 ({{ $store.getters.getCart.length }})</router-link
         >
       </li>
       <li>
