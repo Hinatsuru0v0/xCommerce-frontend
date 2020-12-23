@@ -10,7 +10,9 @@
           <div class="bag-header-btn-pos">
             <div class="bag-header-order">
               <div class="order-btn">
-                <button class="order-main-btn">结账</button>
+                <button class="order-main-btn" @click="handleCheckout">
+                  结账
+                </button>
               </div>
             </div>
           </div>
@@ -84,7 +86,9 @@
       <div class="bag-purchase">
         <div class="bag-summary-box">
           <div class="purchase-btn">
-            <button class="purchase-main-btn">结账</button>
+            <button class="purchase-main-btn" @click="handleCheckout">
+              结账
+            </button>
           </div>
         </div>
       </div>
@@ -124,7 +128,11 @@ export default {
     }
   },
   created() {
-    this.refreshCartData();
+    if (this.$store.state.isLogin) {
+      this.refreshCartData();
+    } else {
+      this.$router.push({ path: "/login" });
+    }
   },
   methods: {
     refreshCartData() {
@@ -135,7 +143,6 @@ export default {
       this.saveChange();
     },
     handleChange(currentValue, id) {
-      console.log(currentValue, id);
       if (currentValue <= 0) {
         for (let index in this.cart) {
           if (this.cart[index].model.id === id) {
@@ -153,6 +160,9 @@ export default {
           cart: this.cart
         })
         .then(() => {});
+    },
+    handleCheckout() {
+      this.$router.push({ path: "/checkout" });
     }
   }
 };

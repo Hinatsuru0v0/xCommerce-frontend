@@ -1,22 +1,25 @@
 <template>
   <div class="login-container">
-    <h1 class="adaptive login-title">登陆 Apple Store</h1>
+    <h1 class="adaptive login-title">立刻加入 Apple Store</h1>
     <div class="adaptive login-main">
       <div class="login-main-framework">
         <div class="login-main-form">
+          <x-label-input
+            :data="inputAccountName"
+            label="Account Name"
+          ></x-label-input>
           <x-label-input
             :data="inputPhoneNumber"
             label="Phone Number"
           ></x-label-input>
           <x-label-input :data="inputPassword" label="Password"></x-label-input>
+          <x-label-input
+            :data="confirmPassword"
+            label="Confirm Password"
+          ></x-label-input>
           <div class="login-main-btn">
-            <el-button class="blue-login-btn" @click="handleLoginBtn"
-              >登陆</el-button
-            >
-          </div>
-          <div class="login-to-register">
-            <router-link class="register-link" to="/register"
-              >没有 Apple ID?立即创建一个</router-link
+            <el-button class="blue-login-btn" @click="handleRegisterBtn"
+              >立即注册</el-button
             >
           </div>
         </div>
@@ -35,11 +38,17 @@ export default {
   },
   data() {
     return {
+      inputAccountName: {
+        content: ""
+      },
       inputPhoneNumber: {
-        content: "",
-        type: "text"
+        content: ""
       },
       inputPassword: {
+        content: "",
+        type: "password"
+      },
+      confirmPassword: {
         content: "",
         type: "password"
       }
@@ -49,14 +58,16 @@ export default {
     this.clearInput();
   },
   methods: {
-    handleLoginBtn() {
+    handleRegisterBtn() {
       if (
+        this.inputAccountName.content.trim() === "" ||
         this.inputPhoneNumber.content.trim() === "" ||
-        this.inputPassword.content.trim() === ""
+        this.inputPassword.content.trim() === "" ||
+        this.confirmPassword.content.trim() === ""
       ) {
         this.$notify.error({
           title: "提交失败",
-          message: "请确认登陆信息完整性后重新提交！",
+          message: "请确认注册信息完整性后重新提交！",
           offset: 44
         });
       } else if (
@@ -69,39 +80,58 @@ export default {
           message: "请确认输入的手机号格式后重新提交！",
           offset: 44
         });
+      } else if (
+        this.inputPassword.content.trim() !==
+        this.confirmPassword.content.trim()
+      ) {
+        this.$notify.error({
+          title: "提交失败",
+          message: "请确认两次密码输入一致后重新提交！",
+          offset: 44
+        });
       } else {
         this.$AJAX
           .get("http://localhost:8099/user", {
             params: {
-              phone: this.inputPhoneNumber.content.trim(),
-              password: this.inputPassword.content.trim()
+              phone: this.inputPhoneNumber.content
             }
           })
           .then(res => {
-            if (res.data.length === 0) {
+            if (res.data.length !== 0) {
               this.clearInput();
               this.$notify.error({
-                title: "登陆失败",
-                message: "账户或密码输入错误！请重新登陆！",
+                title: "注册失败",
+                message: "您所提交的手机号已被注册！请重新提交！",
                 offset: 44
               });
             } else {
-              this.$store.commit("loginAccount", res.data[0]);
-              this.$notify.success({
-                title: "登陆成功",
-                message: "您已登陆成功，继续感受更多美好吧！",
-                offset: 44
-              });
-              setTimeout(() => {
-                this.$router.push({ path: "/" });
-              }, 1000);
+              let newUser = {
+                username: this.inputAccountName.content.trim(),
+                phone: this.inputPhoneNumber.content.trim(),
+                password: this.inputPassword.content.trim(),
+                cart: []
+              };
+              this.$AJAX
+                .post("http://localhost:8099/user", newUser)
+                .then(() => {
+                  this.$notify.success({
+                    title: "注册成功",
+                    message: "您已注册成功，快去登陆您的账号吧！",
+                    offset: 44
+                  });
+                  setTimeout(() => {
+                    this.$router.push({ path: "/login" });
+                  }, 1000);
+                });
             }
           });
       }
     },
     clearInput() {
+      this.inputAccountName.content = "";
       this.inputPhoneNumber.content = "";
       this.inputPassword.content = "";
+      this.confirmPassword.content = "";
     }
   }
 };
@@ -184,20 +214,5 @@ h1 + * {
 }
 .login-main .blue-login-btn:active {
   background-color: #006edb;
-}
-.login-to-register {
-  font-size: 17px;
-  line-height: 1.47059;
-  font-weight: 400;
-  margin-top: 7px;
-}
-.register-link {
-  text-decoration: none;
-  border: 0;
-  color: #06c;
-  margin: 0;
-  padding: 0;
-  vertical-align: inherit;
-  cursor: pointer;
 }
 </style>

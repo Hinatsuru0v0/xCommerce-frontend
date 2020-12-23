@@ -1,10 +1,13 @@
 <template>
-  <router-link class="link list-item" :to="{ name: 'product', params: { id: product.id } }">
+  <router-link
+    class="link list-item"
+    :to="{ name: 'product', params: { id: product.id } }"
+  >
     <el-card class="item-card" :body-style="{ padding: '0' }">
       <figure class="item-cover">
         <img :src="product.pic" :alt="product.name" />
       </figure>
-      <article>
+      <article class="item-article">
         <h3>{{ product.value }}</h3>
         <h5 class="item-desc">{{ product.desc }}</h5>
         <span class="item-price">¥ {{ product.price }}</span>
@@ -56,13 +59,24 @@ h5 {
 }
 .list-item .item-cover {
   margin: 0 auto;
-  padding: 20px 0 0;
+  padding-top: 20px;
   box-sizing: border-box;
-}
-.list-item .item-cover img {
   width: 204px;
   height: 204px;
+  position: relative;
+}
+.list-item .item-cover img {
+  width: 164px;
+  height: auto;
   margin: 0 auto;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+.item-article {
+  position: relative;
+  margin-top: 25px;
 }
 .list-item .item-desc {
   padding: 15px 10px 30px;

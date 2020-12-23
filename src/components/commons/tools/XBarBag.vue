@@ -24,7 +24,11 @@
           :to="{ name: 'product', params: { id: item.product.id } }"
         >
           <span class="item-column-1">
-            <img class="item-pic" :src="item.product.pic" :alt="item.product.name" />
+            <img
+              class="item-pic"
+              :src="item.product.pic"
+              :alt="item.product.name"
+            />
           </span>
           <span class="item-column-2">{{ item.product.name }}</span>
         </router-link>
@@ -60,7 +64,7 @@
           v-else
           type="text"
           class="link sign-in-icon"
-          @click="$store.commit('logout')"
+          @click="handleLogout"
           >注销 {{ $store.state.loginUser.username }}</el-button
         >
       </li>
@@ -85,6 +89,12 @@ export default {
   props: {
     height: Number,
     isDark: Boolean
+  },
+  methods: {
+    handleLogout() {
+      this.$store.commit("logout");
+      this.$router.go(0);
+    }
   }
 };
 </script>

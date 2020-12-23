@@ -13,7 +13,6 @@ Vue.prototype.$PUBILC_URL = process.env.BASE_URL;
 router.beforeEach((to, from, next) => {
   if (!store.state.isLogin) {
     let cookieState = Cookies.get("loginState");
-    console.log(cookieState);
     let cookieUserInfo = {};
     if (cookieState != null) {
       axios

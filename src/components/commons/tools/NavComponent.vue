@@ -5,7 +5,11 @@
         <figure class="nav-link-icon" :style="handleFigureStyle(item)"></figure>
         <span class="nav-link-label">{{ item.name }}</span>
       </a>
-      <router-link v-else class="nav-link" :to="item.link">
+      <router-link
+        v-else
+        class="nav-link"
+        :to="{ name: 'product', params: { id: item.id } }"
+      >
         <figure class="nav-link-icon" :style="handleFigureStyle(item)"></figure>
         <span class="nav-link-label">{{ item.name }}</span>
         <span class="nav-link-new" v-if="item.status === 'brandNew'">新款</span>
@@ -25,7 +29,7 @@ export default {
       return {
         width: item.width + "px",
         "background-size": item.width + "px 54px",
-        "background-image": "url(" + item.imgUrl + ")"
+        "background-image": "url(" + item["imgUrl"] + ")"
       };
     }
   }

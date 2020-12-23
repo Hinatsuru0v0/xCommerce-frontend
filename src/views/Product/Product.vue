@@ -2,7 +2,7 @@
   <div class="page-container">
     <div class="product-container">
       <div class="product-pic">
-        <x-affix>
+        <x-affix :offset="75">
           <div class="sticky-box">
             <img :src="productInfo['pic']" :alt="productInfo.value" />
           </div>
@@ -88,10 +88,24 @@ export default {
       }
     };
   },
+  watch: {
+    $route() {
+      this.initData();
+    }
+  },
   created() {
-    this.getProductInfo();
+    this.initData();
   },
   methods: {
+    initData() {
+      this.userSelected = {
+        id: null,
+        selectedArray: [],
+        choosePrice: 0,
+        quantity: 1
+      };
+      this.getProductInfo();
+    },
     getProductInfo() {
       this.$AJAX
         .get(`http://localhost:8099/product/${this.$route.params.id}`)

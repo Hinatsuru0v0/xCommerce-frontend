@@ -6,16 +6,21 @@
     <el-main class="no-style">
       <router-view></router-view>
     </el-main>
+    <el-footer class="no-style" height="162">
+      <x-footer></x-footer>
+    </el-footer>
   </el-container>
 </template>
 
 <script>
 import XHeader from "../components/commons/XHeader";
+import XFooter from "../components/commons/XFooter";
 
 export default {
   name: "Index",
   components: {
-    XHeader
+    XHeader,
+    XFooter
   }
 };
 </script>

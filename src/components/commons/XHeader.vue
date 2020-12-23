@@ -83,21 +83,26 @@
             :body-style="{ padding: '0' }"
             v-show="showExtendContent !== null"
           >
-            <header-extend-mac
+            <nav-component
+              :goods="navBar['macNav']"
               v-show="showExtendContent === 'mac'"
-            ></header-extend-mac>
-            <header-extend-i-pad
+            ></nav-component>
+            <nav-component
+              :goods="navBar['ipadNav']"
               v-show="showExtendContent === 'ipad'"
-            ></header-extend-i-pad>
-            <header-extend-i-phone
+            ></nav-component>
+            <nav-component
+              :goods="navBar['iphoneNav']"
               v-show="showExtendContent === 'iphone'"
-            ></header-extend-i-phone>
-            <header-extend-watch
+            ></nav-component>
+            <nav-component
+              :goods="navBar['watchNav']"
               v-show="showExtendContent === 'watch'"
-            ></header-extend-watch>
-            <header-extend-music
+            ></nav-component>
+            <nav-component
+              :goods="navBar['musicNav']"
               v-show="showExtendContent === 'music'"
-            ></header-extend-music>
+            ></nav-component>
           </el-card>
         </transition>
       </el-row>
@@ -106,23 +111,14 @@
 </template>
 
 <script>
-import HeaderExtendMac from "@/components/commons/extends/HeaderExtendMac";
-import HeaderExtendIPad from "@/components/commons/extends/HeaderExtendIPad";
-import HeaderExtendIPhone from "@/components/commons/extends/HeaderExtendIPhone";
-import HeaderExtendWatch from "@/components/commons/extends/HeaderExtendWatch";
-import HeaderExtendMusic from "@/components/commons/extends/HeaderExtendMusic";
-
 import XAffix from "@/components/utils/XAffix";
 import XBarBag from "@/components/commons/tools/XBarBag";
+import NavComponent from "@/components/commons/tools/NavComponent";
 
 export default {
   name: "XHeader",
   components: {
-    HeaderExtendMac,
-    HeaderExtendIPad,
-    HeaderExtendIPhone,
-    HeaderExtendWatch,
-    HeaderExtendMusic,
+    NavComponent,
     XAffix,
     XBarBag
   },
@@ -130,16 +126,25 @@ export default {
     return {
       fixStatus: false,
       products: [],
+      navBar: [],
       searchContent: "",
       showExtendContent: null
     };
   },
   mounted() {
+    this.getUpdatedNavbar();
+  },
+  created() {
     this.getUpdatedProducts();
     window.addEventListener("scroll", this.navFixed);
     window.addEventListener("scroll", this.navFixed);
   },
   methods: {
+    getUpdatedNavbar() {
+      this.$AJAX.get("http://localhost:8099/navbar").then(res => {
+        this.navBar = res.data;
+      });
+    },
     changeShowExtendContent(val) {
       this.showExtendContent = val;
     },
@@ -168,7 +173,7 @@ export default {
       };
     },
     handleSearchResult(val) {
-      console.log(val);
+      this.$router.push({ name: "product", params: { id: val.id } });
     }
   }
 };

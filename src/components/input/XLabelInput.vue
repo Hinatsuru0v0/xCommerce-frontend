@@ -2,9 +2,12 @@
   <div class="x-label-input">
     <label>
       <input
+        :disabled="disabled"
         :type="data.type"
         class="input-component"
+        :class="{ 'no-input': !inputStatus }"
         v-model="data.content"
+        @blur="checkInputContent"
         @input="checkInputContent"
       />
       <span
@@ -24,16 +27,21 @@ export default {
   name: "XLabelInput",
   props: {
     data: Object,
-    label: String
+    label: String,
+    disabled: Boolean
   },
   data() {
     return {
-      status: false
+      status: false,
+      inputStatus: true
     };
+  },
+  created() {
+    this.status = this.data.content.length > 0;
   },
   methods: {
     checkInputContent() {
-      this.status = this.data.content.length > 0;
+      this.inputStatus = this.status = this.data.content.length > 0;
     }
   }
 };
@@ -84,5 +92,9 @@ export default {
   transition-duration: 0.125s;
   white-space: nowrap;
   overflow: hidden;
+}
+.x-label-input .no-input {
+  border-color: #e30000;
+  background-color: #fff2f4;
 }
 </style>

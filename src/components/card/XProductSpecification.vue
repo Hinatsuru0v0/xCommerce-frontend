@@ -52,6 +52,7 @@ export default {
   watch: {
     product() {
       this.initializeData();
+      this.subIndex = [];
     }
   },
   methods: {
@@ -161,7 +162,7 @@ fieldset {
   display: flex;
   justify-content: center;
   width: 100%;
-  min-height: 4.88235rem;
+  min-height: 4.18235rem;
   padding: 0.70588rem 0.88235rem;
   text-align: center;
   border: 1px solid #d6d6d6;
@@ -183,9 +184,10 @@ fieldset {
   padding: 0.64706rem;
 }
 .invalid {
-  background-color: #ccc;
-  opacity: 0.4;
-  color: #000;
+  opacity: 0.3;
+  box-shadow: 0 0;
+  border: 1px solid #d6d6d6;
   pointer-events: none;
+  cursor: default;
 }
 </style>

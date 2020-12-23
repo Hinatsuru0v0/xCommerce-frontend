@@ -83,7 +83,7 @@ export default {
       products: []
     };
   },
-  mounted() {
+  created() {
     this.getProductsLength();
     this.getUpdatedProducts("name,id,price", "asc,asc,asc");
   },
