@@ -13,6 +13,9 @@ export default new Vuex.Store({
   getters: {
     getCart(state) {
       return state.loginUser["cart"];
+    },
+    getOrderInfo(state) {
+      return state.loginUser["order"];
     }
   },
   mutations: {
@@ -31,6 +34,9 @@ export default new Vuex.Store({
     },
     setCart(state, val) {
       state.loginUser["cart"] = val;
+    },
+    setOrderInfo(state, val) {
+      state.loginUser["order"] = val;
     }
   },
   actions: {},

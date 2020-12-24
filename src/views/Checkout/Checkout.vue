@@ -242,6 +242,13 @@ export default {
   methods: {
     refreshCartData() {
       this.cart = this.$store.getters.getCart;
+      this.order.firstname.content = this.$store.getters.getOrderInfo.firstname;
+      this.order.lastname.content = this.$store.getters.getOrderInfo.lastname;
+      this.order.desc.content = this.$store.getters.getOrderInfo.desc;
+      this.order.country.content = this.$store.getters.getOrderInfo.country;
+      this.order.phone.content = this.$store.getters.getOrderInfo.phone;
+      this.order.email.content = this.$store.getters.getOrderInfo.email;
+      this.order.contact.content = this.$store.getters.getOrderInfo.contact;
     },
     checkoutOrder() {
       if (
@@ -258,6 +265,19 @@ export default {
           message: "请确认送货地址完整性后重新提交！",
           offset: 44
         });
+      } else if (
+        !/^(13[0-9]|14[5|7]|15[0|1|2|3|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9])\d{8}$/.test(
+          this.order.phone.content.trim()
+        ) ||
+        !/^(13[0-9]|14[5|7]|15[0|1|2|3|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9])\d{8}$/.test(
+          this.order.contact.content.trim()
+        )
+      ) {
+        this.$notify.error({
+          title: "提交失败",
+          message: "请确认输入的手机号格式后重新提交！",
+          offset: 44
+        });
       } else if (this.order.payment === "") {
         this.$notify.error({
           title: "提交失败",
@@ -265,16 +285,42 @@ export default {
           offset: 44
         });
       } else {
-        this.cart = [];
+        let order = {
+          firstname: this.order.firstname.content,
+          lastname: this.order.lastname.content,
+          desc: this.order.desc.content,
+          country: this.order.country.content,
+          phone: this.order.phone.content,
+          email: this.order.email.content,
+          contact: this.order.contact.content
+        };
+        this.$store.commit("setOrderInfo", order);
         this.$store.commit("setCart", []);
         this.$AJAX
           .patch(
             `http://localhost:8099/user/${this.$store.state.loginUser.id}`,
             {
-              cart: this.cart
+              cart: [],
+              order: order
             }
           )
           .then(() => {});
+        for (let i in this.cart) {
+          this.$AJAX
+            .get(`http://localhost:8099/product/${this.cart[i].product.id}`)
+            .then(res => {
+              let sales = res.data["sales"] + this.cart[i].model.quantity;
+              console.log(sales);
+              this.$AJAX
+                .patch(
+                  `http://localhost:8099/product/${this.cart[i].product.id}`,
+                  {
+                    sales: sales
+                  }
+                )
+                .then(() => {});
+            });
+        }
         this.$notify.success({
           title: "提交成功",
           message: "您的订单已提交成功！将于近期送达！",

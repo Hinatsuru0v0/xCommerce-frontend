@@ -11,6 +11,9 @@ Vue.prototype.$AJAX = axios;
 Vue.prototype.$PUBILC_URL = process.env.BASE_URL;
 
 router.beforeEach((to, from, next) => {
+  if (to.meta.title) {
+    document.title = to.meta.title + " - Apple Store";
+  }
   if (!store.state.isLogin) {
     let cookieState = Cookies.get("loginState");
     let cookieUserInfo = {};

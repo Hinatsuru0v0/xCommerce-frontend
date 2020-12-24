@@ -10,22 +10,36 @@
             <router-link class="link active" to="/">Apple Store</router-link>
           </li>
           <li>
-            <router-link class="link" to="/">iPhone 12 Pro</router-link>
+            <router-link
+              class="link"
+              :to="{ name: 'product', params: { id: 'iphone-12-pro' } }"
+              >iPhone 12 Pro</router-link
+            >
           </li>
           <li>
-            <router-link class="link" to="/">AirPods Max</router-link>
+            <router-link
+              class="link"
+              :to="{ name: 'product', params: { id: 'airpods-max' } }"
+              >AirPods Max</router-link
+            >
           </li>
           <li>
-            <router-link class="link" to="/">iPad Air</router-link>
+            <router-link
+              class="link"
+              :to="{ name: 'product', params: { id: 'ipad-air' } }"
+              >iPad Air</router-link
+            >
           </li>
           <li>
-            <router-link class="link" to="/">macOS Big Sur</router-link>
+            <a class="link" href="https://www.apple.com.cn/macos/big-sur/"
+              >macOS Big Sur</a
+            >
           </li>
           <li>
-            <router-link class="link" to="/">iCloud</router-link>
+            <a class="link" href="https://www.icloud.com">iCloud</a>
           </li>
           <li>
-            <router-link class="link" to="/">Support</router-link>
+            <a class="link" href="https://support.apple.com/zh-cn">Support</a>
           </li>
         </ul>
       </el-col>

@@ -37,7 +37,10 @@
     <p v-else class="header-bar-bag-empty">你的购物袋是空的</p>
     <ul class="header-bar-bag-nav">
       <li>
-        <router-link v-if="!$store.state.isLogin" class="link bag-icon" to="/"
+        <router-link
+          v-if="!$store.state.isLogin"
+          class="link bag-icon"
+          to="/login"
           >购物袋</router-link
         >
         <router-link
@@ -48,10 +51,22 @@
         >
       </li>
       <li>
-        <router-link class="link order-icon" to="/">订单</router-link>
+        <router-link
+          v-if="!$store.state.isLogin"
+          class="link order-icon"
+          to="/login"
+          >订单</router-link
+        >
+        <span v-else class="link order-icon" @click="noAccess">订单</span>
       </li>
       <li>
-        <router-link class="link account-icon" to="/">账户</router-link>
+        <router-link
+          v-if="!$store.state.isLogin"
+          class="link account-icon"
+          to="/login"
+          >账户</router-link
+        >
+        <span v-else class="link account-icon" @click="noAccess">账户</span>
       </li>
       <li>
         <router-link
@@ -60,12 +75,8 @@
           to="/login"
           >登陆</router-link
         >
-        <el-button
-          v-else
-          type="text"
-          class="link sign-in-icon"
-          @click="handleLogout"
-          >注销 {{ $store.state.loginUser.username }}</el-button
+        <span v-else class="link sign-in-icon" @click="handleLogout"
+          >注销 {{ $store.state.loginUser.username }}</span
         >
       </li>
     </ul>
@@ -94,6 +105,13 @@ export default {
     handleLogout() {
       this.$store.commit("logout");
       this.$router.go(0);
+    },
+    noAccess() {
+      this.$notify.warning({
+        title: "提示",
+        message: "当前功能仍在开发中！请谅解！",
+        offset: 44
+      });
     }
   }
 };
@@ -122,6 +140,7 @@ ul {
   padding: 0;
 }
 .link {
+  cursor: pointer;
   text-decoration: none;
 }
 .header-bar-bag-icon {

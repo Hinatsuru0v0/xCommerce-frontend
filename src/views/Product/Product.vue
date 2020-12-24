@@ -120,7 +120,10 @@ export default {
           let isAdd = false;
           if (cart.length > 0) {
             for (let item in cart) {
-              if (cart[item].model.id === this.userSelected.id) {
+              if (
+                cart[item].product.id === this.productInfo.id &&
+                cart[item].model.id === this.userSelected.id
+              ) {
                 cart[item].model.quantity++;
                 isAdd = true;
               }
